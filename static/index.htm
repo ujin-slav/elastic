@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Elastic</title>
+</head>
+<body>
+    <div id="app"> </div>
+       
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+      
+   <script type="text/babel">
+	let prevValue = '';
+	
+	const search = (searchValue) => {
+	  console.log(searchValue)
+	}
+   
+	const changeHandler =(event)=>{
+		search(event.target.value)
+	}
+
+    const handleClick =()=>{
+
+        const productsList = [
+            { Id: 1, Name: 'Молоко пастеризованное 2л', Description: 'Хорошое вкусное' },
+            { Id: 2, Name: 'Молоко ультрапастеризованное 2л', Description: 'Насыщенный вкус' },
+            { Id: 3, Name: 'Молоко соевое 1л', Description: 'Кому-то нужно' },
+            { Id: 4, Name: 'Молоко рисовое 2л', Description: 'ого' },
+            { Id: 5, Name: 'Молоко овсяное 2л', Description: 'Хорош' },
+            { Id: 6, Name: 'Молоко миндальное 2л', Description: 'Это как' },
+            { Id: 7, Name: 'Молоко шоколадное 0,2л', Description: 'Хмм' },
+            { Id: 8, Name: 'Молоко отборное 1л', Description: 'Хорошое послевкусие' },
+            { Id: 9, Name: 'Молоко отборное но старое 1л', Description: 'Хорошое послевкусие' },
+            { Id: 10, Name: 'Молоко топленое 2л', Description: 'Ух' },
+            { Id: 11, Name: 'Масло пастеризованное 2л', Description: 'Хорошое вкусное' },
+            { Id: 12, Name: 'Масло ультрапастеризованное 2л', Description: 'Насыщенный вкус' },
+            { Id: 13, Name: 'Масло соевое 1л', Description: 'Кому-то нужно' },
+            { Id: 14, Name: 'Масло рисовое 2л', Description: 'ого' },
+            { Id: 15, Name: 'Масло овсяное 2л', Description: 'Хорош' },
+            { Id: 16, Name: 'Масло миндальное 2л', Description: 'Это как' },
+            { Id: 17, Name: 'Масло шоколадное 0,2л', Description: 'Хмм' },
+            { Id: 18, Name: 'Масло отборное 1л', Description: 'Хорошое послевкусие' },
+        ]
+
+		// fetch('test', {
+        //     method: 'POST',
+        //     body: JSON.stringify({text:"hello"}),
+        //     headers: {
+        //     'Content-Type': 'application/json;charset=utf-8'
+        //     },
+        // })
+
+        productsList.forEach(product => {
+            let response = fetch('http://localhost:9200/' + 'store/products/' + product.Id, {
+            method: 'PUT',
+            body: JSON.stringify(product),
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin':'*'
+            }
+            });
+            let result = response.then(rs => {
+            console.log(rs.json());
+            })
+        })
+	}
+	
+    const rootNode = document.getElementById("app");    // элемент для рендеринга приложения React
+    const root = ReactDOM.createRoot(rootNode);
+    root.render(
+        <div>
+			 <input type="text" placeholder="Наберите текст" onChange={(e)=>changeHandler(event)}/>
+             <button onClick={handleClick}>Заполнить</button>
+		</div>
+     );
+   </script>
+</body>
+</html>
